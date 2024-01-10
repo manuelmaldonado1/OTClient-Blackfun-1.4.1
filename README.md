@@ -1,3 +1,4 @@
+![aaaa](https://github.com/manuelmaldonado1/Blackfun-OTClient/assets/77561425/c981a20a-63a2-4761-9c94-77541dd8a041)
 # OTCLient - Redemption
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
 [![Discord Shield](https://discordapp.com/api/guilds/888062548082061433/widget.png?style=shield)](https://discord.gg/HZN8yJJSyC)
