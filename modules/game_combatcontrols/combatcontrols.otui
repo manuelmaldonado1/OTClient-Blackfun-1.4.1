@@ -1,0 +1,99 @@
+CombatBox < UICheckBox
+  size: 32 32
+  image-clip: 0 0 20 20
+  margin: 2 4
+
+  $checked:
+    image-clip: 0 20 20 20
+
+FightOffensiveBox < CombatBox
+  image-source: /images/game/combatmodes/stance_icons
+  image-clip: 0 0 28 28
+
+  $checked:
+    image-clip: 0 56 28 28
+
+FightBalancedBox < CombatBox
+  image-source: /images/game/combatmodes/stance_icons
+  image-clip: 28 0 28 28
+
+  $checked:
+    image-clip: 28 56 28 28
+
+FightDefensiveBox < CombatBox
+  image-source: /images/game/combatmodes/stance_icons
+  image-clip: 56 0 28 28
+
+  $checked:
+    image-clip: 56 56 28 28
+
+ChaseModeBox < CombatBox
+  image-source: /images/game/combatmodes/stance_icons
+  image-clip: 84 0 28 28
+
+  $checked:
+    image-clip: 112 56 28 28
+
+SafeFightBox < CombatBox
+  image-source: /images/game/combatmodes/stance_icons
+  image-clip: 140 0 28 28
+
+  $checked:
+    image-clip: 140 56 28 28
+
+MountButton < CombatBox
+  image-source: /images/game/combatmodes/mount
+
+WhiteDoveBox < CombatBox
+  image-source: /images/game/combatmodes/whitedovemode
+WhiteHandBox < CombatBox
+  image-source: /images/game/combatmodes/whitehandmode
+YellowHandBox < CombatBox
+  image-source: /images/game/combatmodes/yellowhandmode
+RedFistBox < CombatBox
+  image-source: /images/game/combatmodes/redfistmode
+
+MiniWindow
+  id: combatControlsWindow
+  !text: tr('Combat Controls')
+  height: 125
+  text-offset: 60 35
+  image-border-top: 65
+  image-border-bottom: 25
+  padding-top: 35
+  padding-bottom: 13
+  margin-top: -9
+  icon: /images/topbuttons/exp
+  &save: true
+  &simpleControlsHeight: 150
+  &extendedControlsHeight: 150
+  @onClose: modules.game_combatcontrols.onMiniWindowClose()
+
+  MiniWindowContents
+    FightOffensiveBox
+      id: fightOffensiveBox
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 10 20
+    FightBalancedBox
+      id: fightBalancedBox
+      anchors.top: parent.top
+      anchors.left: prev.right
+      margin: 10 5
+    FightDefensiveBox
+      id: fightDefensiveBox
+      anchors.top: parent.top
+      anchors.left: prev.right
+      margin: 10 5
+    ChaseModeBox
+      id: chaseModeBox
+      anchors.top: parent.top
+      anchors.right: next.left
+      margin: 10 5
+    SafeFightBox
+      id: safeFightBox
+      anchors.top: parent.top
+      anchors.right: parent.right
+      margin: 10 5
+
+

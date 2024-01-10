@@ -1,0 +1,12 @@
+Module
+  name: game_exph
+  description: Manage exp/h window
+  author: shagz
+  website: www.otclient.info
+  sandboxed: true
+  scripts: [ exph ]
+  @onLoad: init()
+  @onUnload: terminate()
+  autoload: true
+  dependencies:
+    - game_interface

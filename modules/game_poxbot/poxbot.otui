@@ -1,0 +1,666 @@
+Waypoint < Label
+  background-color: alpha
+  text-offset: 2 0
+  focusable: true
+  id: wpt
+
+BotBox < OptionCheckBox
+  @onCheckChange: modules.game_poxbot.toggleLoop(self:getId())
+
+NormalBotBox < CheckBox
+  @onCheckChange: modules.game_poxbot.toggleLoop(self:getId())
+
+OffsetBox < CheckBox
+  @onCheckChange: modules.game_poxbot.toggleOffset(self:getId())
+  
+MainWindow
+  !text: tr('PoxBot')
+  size: 528 440
+  @onEscape: self:hide()
+
+  Label
+    height: 1
+    id: fixes_bug
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+    focusable: true
+
+  FlatPanel
+    id: buttons
+    visible: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+
+    Button
+      id: buttonOk
+      !text: tr('Cavebot')
+      width: 100
+      @onClick: modules.game_poxbot.selectPanel("cavebot")
+      anchors.top: parent.top
+      anchors.left: parent.left
+    Button
+      id: buttonOk
+      !text: tr('Targeting')
+      width: 100
+      @onClick: modules.game_poxbot.selectPanel("targeting")
+      anchors.top: parent.top
+      anchors.left: prev.right
+    Button
+      id: buttonOk
+      !text: tr('Looting')
+      width: 100
+      @onClick: modules.game_poxbot.selectPanel("looting")
+      anchors.top: parent.top
+      anchors.left: prev.right
+    Button
+      id: buttonOk
+      !text: tr('Healing')
+      width: 100
+      @onClick: modules.game_poxbot.selectPanel("healing")
+      anchors.top: parent.top
+      anchors.left: prev.right
+    Button
+      id: buttonOk
+      !text: tr('Tools')
+      width: 100
+      @onClick: modules.game_poxbot.selectPanel("tools")
+      anchors.top: parent.top
+      anchors.left: prev.right
+
+  FlatPanel
+    id: cavebot
+    width: 200
+    visible: true
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: buttons.bottom
+    anchors.bottom: parent.bottom
+
+    TextList
+      id: waypoints
+      height: 80
+      width: 246
+      anchors.top: parent.top
+      anchors.left: parent.left
+      focusable: false
+      vertical-scrollbar: reasonListScrollBar
+
+    VerticalScrollBar
+      id: reasonListScrollBar
+      anchors.top: waypoints.top
+      anchors.bottom: waypoints.bottom
+      anchors.right: waypoints.right
+      step: 14
+      pixels-scroll: true
+
+    FlatPanel
+      id: offets
+      height: 80
+      width: 80
+      anchors.top: parent.top
+      anchors.left: waypoints.right
+
+      OffsetBox
+        id: offsetNorth
+        anchors.left: parent.left
+        anchors.top: parent.top
+        !tooltip: tr('Sets waypoint to the north of player position')
+        margin-left: 32
+      OffsetBox
+        id: offsetWest
+        anchors.left: parent.left
+        anchors.top: offsetNorth.bottom
+        !tooltip: tr('Sets waypoint to the west of player position')
+        margin-top: 15
+      OffsetBox
+        id: offsetCenter
+        anchors.left: offsetWest.right
+        anchors.top: offsetNorth.bottom
+        !tooltip: tr('Sets waypoint at player position')
+        margin-left: 17
+        margin-top: 15
+      OffsetBox
+        id: offsetEast
+        anchors.right: parent.right
+        anchors.top: offsetNorth.bottom
+        !tooltip: tr('Sets waypoint to the east of player position')
+        margin-top: 15
+      OffsetBox
+        id: offsetSouth
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        !tooltip: tr('Sets waypoint to the south of player position')
+        margin-left: 32
+
+    Button
+      id: buttonOk
+      !text: tr('Walk')
+      width: 50
+      @onClick: modules.game_poxbot.addWaypoint("Walk")
+      anchors.top: waypoints.bottom
+      anchors.left: waypoints.left
+    Button
+      id: shovel
+      !text: tr('Shovel')
+      width: 50
+      @onClick: modules.game_poxbot.addWaypoint("Shovel")
+      anchors.top: waypoints.bottom
+      anchors.left: buttonOk.right
+    Button
+      id: rope
+      !text: tr('Rope')
+      width: 50
+      @onClick: modules.game_poxbot.addWaypoint("Rope")
+      anchors.top: waypoints.bottom
+      anchors.left: shovel.right
+    Button
+      id: ladder
+      !text: tr('Use')
+      width: 50
+      @onClick: modules.game_poxbot.addWaypoint("Use")
+      anchors.top: waypoints.bottom
+      anchors.left: rope.right
+    Button
+      id: lure
+      !text: tr('Lure')
+      width: 50
+      @onClick: modules.game_poxbot.addWaypoint("Lure")
+      anchors.top: waypoints.bottom
+      anchors.left: ladder.right
+    Button
+      id: 
+      !text: tr('Wait')
+      width: 50
+      @onClick: modules.game_poxbot.addWaypoint("Wait")
+      anchors.top: buttonOk.bottom
+      anchors.left: waypoints.left
+
+    BotBox
+      id: walking
+      !text: tr('Enable Walking')
+      focusable: true
+
+    Button
+      id: clear
+      !text: tr('Clear waypoints')
+      width: 120
+      @onClick: modules.game_poxbot.clearWaypoints()
+      anchors.top: walking.bottom
+      anchors.left: parent.left
+      margin-top: 5
+
+  FlatPanel
+    id: targeting
+    width: 200
+    visible: false
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: buttons.bottom
+    anchors.bottom: parent.bottom
+
+    BotBox
+      id: autoAttack
+      !tooltip: tr('Automatically attack monsters.')
+      !text: tr('Enable Attacking')
+      focusable: true
+      anchors.top: parent.top
+      anchors.left: parent.left
+
+    TextList
+      id: targets
+      height: 80
+      width: 180
+      anchors.top: autoAttack.bottom
+      anchors.left: parent.left
+      focusable: false
+      vertical-scrollbar: reasonListScrollBar2
+
+    VerticalScrollBar
+      id: reasonListScrollBar2
+      anchors.top: targets.top
+      anchors.bottom: targets.bottom
+      anchors.right: targets.right
+      step: 14
+      pixels-scroll: true
+
+    TextEdit
+      id: TargetText
+      width: 30
+      !text: tr('Rat')
+      anchors.top: targets.bottom
+      anchors.left: targets.left
+      anchors.right: targets.right
+
+    Button
+      id: buttonOk2
+      !text: tr('Add target')
+      width: 120
+      @onClick: modules.game_poxbot.addTarget()
+      anchors.top: TargetText.bottom
+      anchors.left: TargetText.left
+
+    Button
+      id: clear
+      !text: tr('Clear targets')
+      width: 120
+      @onClick: modules.game_poxbot.clearTargets()
+      anchors.top: buttonOk2.bottom
+      anchors.left: targets.left
+      margin-top: 5
+
+    NormalBotBox
+      id: AtkSpell
+      !text: tr('Attack spell/rune')
+      !tooltip: tr('Automatically cast the spell or rune below when you are attacking.')
+      anchors.top: parent.top
+      anchors.left: targets.right
+      width: 180
+      focusable: true
+      margin-left: 20
+
+    Label
+      id: AtkSpl
+      !text: tr('Single Target Spell/Rune')
+      anchors.top: prev.bottom
+      anchors.left: targets.right
+      width: 180
+      focusable: true
+      margin-left: 20
+
+    TextEdit
+      id: AtkSpellText
+      width: 120
+      !text: tr('')
+      anchors.top: prev.bottom
+      anchors.left: targets.right
+      margin-top: 2
+      margin-left: 20
+
+    Label
+      id: AtkRune
+      !text: tr('AoE Rune')
+      anchors.top: prev.bottom
+      anchors.left: targets.right
+      width: 180
+      focusable: true
+      margin-left: 20
+
+    TextEdit
+      id: AtkRuneName
+      width: 120
+      !text: tr('')
+      anchors.top: prev.bottom
+      anchors.left: targets.right
+      margin-left: 20
+
+    Label
+      id: AtkRune
+      !text: tr('AoE Amount')
+      anchors.top: prev.bottom
+      anchors.left: targets.right
+      width: 180
+      focusable: true
+      margin-left: 20
+
+    TextEdit
+      id: AtkRuneAmount
+      width: 50
+      !text: tr('2')
+      anchors.top: prev.bottom
+      anchors.left: targets.right
+      margin-left: 20
+
+    HorizontalSeparator
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.top: clear.bottom
+      margin-top: 8
+      margin-bot: 8
+
+    CheckBox
+      id: KeepDistance
+      !text: tr('Keep Distance from Target')
+      !tooltip: tr('keep 4sqm distance from target.')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      width: 180
+      focusable: true
+    CheckBox
+      id: LureTarget
+      !text: tr('Lure Target')
+      !tooltip: tr('Lure target to latest lure waypoint.')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      width: 180
+      focusable: true
+
+  FlatPanel
+    id: looting
+    width: 200
+    visible: false
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: buttons.bottom
+    anchors.bottom: parent.bottom
+
+    BotBox
+      id: autoLoot
+      !tooltip: tr('Automatically loot.')
+      !text: tr('Enable Looting')
+      focusable: true
+      anchors.top: parent.top
+      anchors.left: parent.left
+
+    TextList
+      id: lootitems
+      height: 80
+      width: 180
+      anchors.top: autoLoot.bottom
+      anchors.left: parent.left
+      focusable: false
+      vertical-scrollbar: reasonListScrollBar2
+
+    VerticalScrollBar
+      id: reasonListScrollBar2
+      anchors.top: lootitems.top
+      anchors.bottom: lootitems.bottom
+      anchors.right: lootitems.right
+      step: 14
+      pixels-scroll: true
+
+    TextEdit
+      id: lootText
+      width: 30
+      !text: tr('')
+      anchors.top: lootitems.bottom
+      anchors.left: lootitems.left
+      anchors.right: lootitems.right
+
+    Button
+      id: buttonOk2
+      !text: tr('Add item')
+      width: 120
+      @onClick: modules.game_poxbot.addLoot()
+      anchors.top: lootText.bottom
+      anchors.left: lootText.left
+
+    Button
+      id: clear
+      !text: tr('Clear items')
+      width: 120
+      @onClick: modules.game_poxbot.clearItems()
+      anchors.top: buttonOk2.bottom
+      anchors.left: lootitems.left
+      margin-top: 5
+
+  FlatPanel
+    id: healing
+    width: 200
+    visible: false
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: buttons.bottom
+    anchors.bottom: parent.bottom
+
+    BotBox
+      id: AutoHeal
+      !tooltip: tr('Automatically heal yourself.')
+      !text: tr('Enable Healing')
+      focusable: true
+      anchors.top: parent.top
+      anchors.left: parent.left
+
+    Label
+      id: Heal1
+      width: 120
+      !text: tr('First Healing:')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+
+    TextEdit
+      id: Heal1Text
+      width: 120
+      !text: tr('Exura')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+
+    Label
+      id: Heal1Label
+      !text: tr('Under HP:')
+      anchors.left: prev.right
+      anchors.top: Heal1.top
+      margin-left: 18
+
+    TextEdit
+      id: Heal1Pc
+      !text: tr('90')
+      width: 30
+      anchors.left: prev.left
+      anchors.top: prev.bottom
+
+    Label
+      id: Percent
+      !text: tr('%%')
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-top: 3
+
+    Label
+      id: Heal2
+      width: 120
+      !text: tr('Second Healing:')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+      margin-top: 5
+
+    TextEdit
+      id: Heal2Text
+      width: 120
+      !text: tr('')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+
+    Label
+      id: Heal2Label
+      !text: tr('Under HP:')
+      anchors.left: prev.right
+      anchors.top: Heal2.top
+      margin-left: 18
+
+    TextEdit
+      id: Heal2Pc
+      !text: tr('0')
+      width: 30
+      anchors.left: prev.left
+      anchors.top: prev.bottom
+
+    Label
+      id: Percent
+      !text: tr('%%')
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-top: 3
+
+    Label
+      id: Heal3
+      width: 120
+      !text: tr('Third Healing:')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+      margin-top: 5
+
+    TextEdit
+      id: Heal3Text
+      width: 120
+      !text: tr('')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+
+    Label
+      id: Heal3Label
+      !text: tr('Under HP:')
+      anchors.left: prev.right
+      anchors.top: Heal3.top
+      margin-left: 18
+
+    TextEdit
+      id: Heal3Pc
+      !text: tr('0')
+      width: 30
+      anchors.left: prev.left
+      anchors.top: prev.bottom
+
+    Label
+      id: PercentLast
+      !text: tr('%%')
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-top: 3
+
+    HorizontalSeparator
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.top: PercentLast.bottom
+      margin-top: 10
+      margin-bot: 10
+
+    CheckBox
+      id: Mana1
+      width: 120
+      !text: tr('Refill Mana')
+      !tooltip: tr('Use mana potion when lower than mana percent.')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+
+    Label
+      id: Mana1Label
+      !text: tr('Under MP:')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+
+    TextEdit
+      id: Mana1Pc
+      !text: tr('90')
+      width: 30
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+
+    Label
+      id: Percent
+      !text: tr('%%')
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-top: 3
+
+  FlatPanel
+    id: tools
+    width: 200
+    visible: false
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: buttons.bottom
+    anchors.bottom: parent.bottom
+
+    Label
+      id: wptlabel
+      !text: tr('Filename:') 
+      anchors.top: parent.top
+      anchors.left: parent.left
+
+    TextEdit
+      id: WptName
+      width: 158
+      !text: tr('default')
+      anchors.left: parent.left
+      anchors.top: prev.bottom
+      margin-top: 2
+    
+
+    Button
+      id: save
+      !text: tr('Save')
+      width: 80
+      @onClick: modules.game_poxbot.saveWaypoints()
+      !tooltip: tr('Saves your waypoints in the filename above, located inside modules/otcbot-master/savedfiles.')
+      anchors.top: prev.bottom
+      anchors.left: prev.left
+      margin-top: 2
+
+    Button
+      id: load
+      !text: tr('Load')
+      width: 80
+      @onClick: modules.game_poxbot.loadWaypoints()
+      !tooltip: tr('Loads your waypoints from the filename above, located inside modules/game_poxbot/savedfiles.')
+      anchors.top: save.top
+      anchors.left: save.right
+
+    NormalBotBox
+      id: ManaTrain
+      !text: tr('Mana training')
+      !tooltip: tr('Automatically cast this spell when above mana:')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      width: 180
+      focusable: true
+
+    TextEdit
+      id: ManaSpellText
+      width: 100
+      !text: tr('utana vid')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 2
+
+
+    Label
+      id: Percent
+      !text: tr('Above')
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-top: 2
+      margin-left: 5
+
+
+    TextEdit
+      id: ManaTrainPercent
+      !text: tr('90')
+      width: 30
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-top: 2
+      margin-left: 5
+
+    Label
+      id: Percent
+      !text: tr('%%')
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-top: 2
+
+    NormalBotBox
+      id: AutoHaste
+      !text: tr('Auto haste')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      width: 180
+      focusable: true
+
+    TextEdit
+      id: HasteText
+      width: 100
+      !text: tr('utani hur')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      margin-top: 2
+
+    NormalBotBox
+      id: AutoManaShield
+      !text: tr('Auto mana shield')
+      !tooltip: tr('Automatically cast utamo vita when you dont have magic shield')
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      width: 180
+      focusable: true

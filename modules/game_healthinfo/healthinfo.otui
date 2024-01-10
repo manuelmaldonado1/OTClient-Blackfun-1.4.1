@@ -1,0 +1,109 @@
+HealthBar < ProgressBar
+  id: healthBar
+  background-color: #ff4444
+  anchors.top: parent.top
+  anchors.left: parent.left
+  anchors.right: parent.right
+  margin-top: 5
+  margin-left: 25
+  margin-right: 15
+
+ManaBar < ProgressBar
+  id: manaBar
+  background-color: #4444ff
+  anchors.top: prev.bottom
+  anchors.left: parent.left
+  anchors.right: parent.right
+  margin-top: 10
+  margin-left: 25
+  margin-right: 15
+
+ExperienceBar < ProgressBar
+  id: experienceBar
+  background-color: #B6E866
+  anchors.top: prev.bottom
+  anchors.left: parent.left
+  anchors.right: parent.right
+  margin-top: 10
+  margin-left: 25
+  margin-right: 15
+
+SoulLabel < GameLabel
+  id: soulLabel
+  text-align: center
+  color: white
+  image-source: /images/ui/capacity_box
+  height: 32
+  anchors.top: prev.top
+  anchors.right: parent.right
+  anchors.left: parent.horizontalCenter
+  margin-top: -35
+  margin-left: 5
+  margin-right: 7
+  on: true
+
+  $!on:
+    visible: false
+    margin-top: 0
+    height: 0
+
+CapLabel < GameLabel
+  id: capLabel
+  color: white
+  image-source: /images/ui/capacity_box
+  height: 32
+  font: verdana-11px-rounded
+  anchors.top: parent.top
+  anchors.left: parent.left
+  anchors.right: parent.horizontalCenter
+  margin-top: 75
+  margin-left: 15
+  text-offset: 20 9
+  on: true
+
+  $!on:
+    visible: false
+    margin-top: 0
+    height: 0
+
+ConditionWidget < UIWidget
+  size: 18 18
+
+  $!first:
+    margin-left: 2
+
+MiniWindow
+  id: healthInfoWindow
+  !text: tr('Health Info')
+  height: 220
+  text-offset: 60 35
+  image-border-top: 65
+  image-border-bottom: 25
+  padding-top: 35
+  padding-bottom: 13
+  margin-top: -9
+  icon: /images/topbuttons/exp
+  @onClose: modules.game_healthinfo.onMiniWindowClose()
+  &save: true
+
+  MiniWindowContents
+    HealthBar
+    ManaBar
+    ExperienceBar
+    Panel
+      id: conditionPanel
+      layout:
+        type: horizontalBox
+      height: 25
+      margin-left: 20
+      margin-right: 10
+      margin-top: 40
+      padding: 4
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      border-width: 1
+      border-color: #00000077
+      background-color: #ffffff11
+    SoulLabel
+    CapLabel

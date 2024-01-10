@@ -1,0 +1,11 @@
+Module
+  name: game_poxbot
+  description: Basic bot module
+  author: Pox
+  website: www.otclient.info
+  sandboxed: true 
+  scripts: [ poxbot.lua ]
+  autoload: true
+  autoload-priority: 1001
+  @onLoad: init()
+  @onUnload: terminate()
